@@ -15,15 +15,18 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch(err => console.error('DB connection error:', err));
 
 const foodRoutes = require('./routes/foods');
-app.use('/foods', foodRoutes);
+app.use('/api/foods', foodRoutes);
+
+const productRoutes = require('./routes/products');
+app.use('/api/products', productRoutes);
 
 const userRoutes = require('./routes/users');
-app.use('/users', userRoutes);
+app.use('/api/users', userRoutes);
 
 const orderRoutes = require('./routes/orders');
-app.use('/orders', orderRoutes);
+app.use('/api/orders', orderRoutes);
 
-app.get('/ping', (req, res) => res.send('pong'));
+app.get('/api/ping', (req, res) => res.send('pong'));
 
 const setupSwagger = require('./swagger');
 setupSwagger(app);

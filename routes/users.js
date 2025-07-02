@@ -90,6 +90,6 @@ const {
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/:email', getUserByEmail);
-router.put('/update/:email', updateUserInfo)
+router.put('/:email', updateUserInfo)
 
 module.exports = router;

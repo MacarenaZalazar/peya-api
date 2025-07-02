@@ -5,11 +5,12 @@ const path = require('path');
 
 // Modelos
 const Food = require('./models/Food');
+const Product = require('./models/Product');
 const User = require('./models/User');
 const Order = require('./models/Order');
 
 // Leer archivo JSON
-const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'seed_data.json'), 'utf-8'));
+const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'seed_data_categorizado.json'), 'utf-8'));
 
 async function seedDatabase() {
   try {
@@ -21,11 +22,12 @@ async function seedDatabase() {
 
     console.log('🧹 Limpiando colecciones existentes...');
     await Food.deleteMany();
+    await Product.deleteMany();
     await User.deleteMany();
     await Order.deleteMany();
 
-    console.log('🍔 Insertando comidas...');
-    await Food.insertMany(data.foods);
+    console.log('🍔 Insertando productos...');
+    await Product.insertMany(data.product);
 
     console.log('👤 Insertando usuario demo...');
     await User.create(data.user);

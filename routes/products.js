@@ -1,0 +1,118 @@
+// routes/products.js
+const express = require('express');
+const router = express.Router();
+const {
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct
+} = require('../controllers/productController');
+
+/**
+ * @swagger
+ * /products:
+ *   get:
+ *     summary: Obtener todos los productos (products)
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: Lista de productos
+ *
+ *   post:
+ *     summary: Crear un nuevo producto
+ *     tags: [Products]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - imageUrl
+ *               - price
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               imageUrl:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *               hasDrink:
+ *                 type: boolean
+ *     responses:
+ *       201:
+ *         description: Producto creado
+ */
+
+/**
+ * @swagger
+ * /products/{id}:
+ *   get:
+ *     summary: Obtener un producto por ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID del producto
+ *     responses:
+ *       200:
+ *         description: Detalle del producto
+ *
+ *   put:
+ *     summary: Actualizar un producto por ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               imageUrl:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *               hasDrink:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Producto actualizado
+ *
+ *   delete:
+ *     summary: Eliminar un producto por ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Producto eliminado
+ */
+
+router.get('/', getAllProducts);
+router.get('/:id', getProductById);
+router.post('/', createProduct);
+router.put('/:id', updateProduct);
+router.delete('/:id', deleteProduct);
+
+module.exports = router;
