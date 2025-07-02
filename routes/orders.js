@@ -1,6 +1,6 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { createOrder, getOrders } = require('../controllers/orderController');
+const { createOrder, getOrders } = require("../controllers/orderController");
 
 /**
  * @swagger
@@ -50,10 +50,17 @@ const { createOrder, getOrders } = require('../controllers/orderController');
  *         description: Error en los datos enviados
  *       500:
  *         description: Error en el servidor
- *
+ *  /{userId}
  *   get:
- *     summary: Obtener el historial de pedidos
+ *     summary: Obtener el historial de pedidos por usuario
  *     tags: [Orders]
+ *  *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Id del usuario
  *     responses:
  *       200:
  *         description: Lista de pedidos
@@ -62,7 +69,7 @@ const { createOrder, getOrders } = require('../controllers/orderController');
  */
 
 // Endpoints
-router.post('/', createOrder);
-router.get('/', getOrders);
+router.post("/", createOrder);
+router.get("/:userId", getOrders);
 
 module.exports = router;
