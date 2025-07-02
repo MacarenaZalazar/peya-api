@@ -4,7 +4,7 @@ const Order = require("../models/Order");
 const createOrder = async (req, res) => {
   try {
     const { user, items } = req.body;
-    if (!user || !array.isArray(items) || items.lenght === 0)
+    if (!user || !Array.isArray(items) || items.length === 0)
       return res
         .status(400)
         .json({ message: "faltan datos para procesar la orden" });

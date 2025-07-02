@@ -4,6 +4,13 @@ const { createOrder, getOrders } = require("../controllers/orderController");
 
 /**
  * @swagger
+ * tags:
+ *   name: Orders
+ *   description: Endpoints relacionados a pedidos
+ */
+
+/**
+ * @swagger
  * /orders:
  *   post:
  *     summary: Crear un nuevo pedido
@@ -15,34 +22,28 @@ const { createOrder, getOrders } = require("../controllers/orderController");
  *           schema:
  *             type: object
  *             required:
- *               - orderId
- *               - productIds
- *               - total
- *               - timestamp
+ *               - user
+ *               - items
  *             properties:
- *               orderId:
+ *               user:
  *                 type: string
- *               productIds:
+ *                 description: ID del usuario
+ *               items:
  *                 type: array
+ *                 description: Lista de productos del pedido
  *                 items:
  *                   type: object
+ *                   required:
+ *                     - productName
+ *                     - price
+ *                     - quantity
  *                   properties:
- *                     name:
- *                       type: string
- *                     description:
- *                       type: string
- *                     imageUrl:
+ *                     productName:
  *                       type: string
  *                     price:
  *                       type: number
- *                     hasDrink:
- *                       type: boolean
  *                     quantity:
  *                       type: integer
- *               total:
- *                 type: number
- *               timestamp:
- *                 type: integer
  *     responses:
  *       201:
  *         description: Pedido creado exitosamente
@@ -50,17 +51,21 @@ const { createOrder, getOrders } = require("../controllers/orderController");
  *         description: Error en los datos enviados
  *       500:
  *         description: Error en el servidor
- *  /{userId}
+ */
+
+/**
+ * @swagger
+ * /orders/{userId}:
  *   get:
  *     summary: Obtener el historial de pedidos por usuario
  *     tags: [Orders]
- *  *     parameters:
+ *     parameters:
  *       - in: path
  *         name: userId
  *         required: true
  *         schema:
  *           type: string
- *         description: Id del usuario
+ *         description: ID del usuario
  *     responses:
  *       200:
  *         description: Lista de pedidos
