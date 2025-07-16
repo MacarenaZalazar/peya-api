@@ -51,10 +51,11 @@ const getUserByEmail = async (req, res) => {
 // Actualizar usuario por email
 const updateUserInfo = async (req, res) => {
   try {
-    const { fullName, userImageUrl } = req.body;
+    const { fullName, userImageUrl, encryptedPassword } = req.body;
 
     // Construimos solo los campos que sí queremos actualizar
-    const updateFields = { fullName };
+    const updateFields = { fullName, encryptedPassword };
+
 
     if (userImageUrl !== undefined && userImageUrl !== null && userImageUrl.trim() !== '') {
       updateFields.userImageUrl = userImageUrl;
