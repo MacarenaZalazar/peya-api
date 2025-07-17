@@ -3,12 +3,12 @@ const Order = require("../models/Order");
 // Crear un nuevo pedido
 const createOrder = async (req, res) => {
   try {
-    const { user, items } = req.body;
+    const { user, items, total } = req.body;
     if (!user || !Array.isArray(items) || items.length === 0)
       return res
         .status(400)
         .json({ message: "faltan datos para procesar la orden" });
-    const order = new Order({ user, items });
+    const order = new Order({ userId: user, items, total });
     await order.save();
     const saved = await order.save();
     res.status(201).json(saved);
