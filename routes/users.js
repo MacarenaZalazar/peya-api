@@ -4,7 +4,8 @@ const {
   registerUser,
   loginUser,
   getUserByEmail,
-  updateUserInfo
+  updateUserInfo,
+  updateUserImg
 } = require('../controllers/userController');
 
 /**
@@ -84,12 +85,14 @@ const {
  *         description: Usuario no encontrado
  *       500:
  *         description: Error en el servidor
+ * 
  */
 
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/:email', getUserByEmail);
-router.put('/:email', updateUserInfo)
+router.put('/:email', updateUserInfo);
+router.put('/:email/image', updateUserImg);
 
 module.exports = router;

@@ -77,10 +77,37 @@ const updateUserInfo = async (req, res) => {
   }
 };
 
+const updateUserImg = async (req, res) => {
+  try {
+    const { userImageUrl } = req.body;
+
+    const updateFields = { userImageUrl };
+
+    if (userImageUrl !== undefined && userImageUrl !== null && userImageUrl.trim() !== '') {
+      updateFields.userImageUrl = userImageUrl;
+    }
+
+    const user = await User.findOneAndUpdate(
+      { email: req.params.email },
+      updateFields,
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualizar usuario', error });
+  }
+};
+
 
 module.exports = {
   registerUser,
   loginUser,
   getUserByEmail,
   updateUserInfo,
+  updateUserImg
 };
