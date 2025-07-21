@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require("../models/User");
 
 // Registro de usuario
 const registerUser = async (req, res) => {
@@ -7,14 +7,14 @@ const registerUser = async (req, res) => {
 
     const exists = await User.findOne({ email });
     if (exists) {
-      return res.status(409).json({ message: 'El usuario ya existe' });
+      return res.status(409).json({ message: "El usuario ya existe" });
     }
 
     const newUser = new User({ email, fullName, encryptedPassword });
     const saved = await newUser.save();
     res.status(201).json(saved);
   } catch (error) {
-    res.status(500).json({ message: 'Error al registrar usuario', error });
+    res.status(500).json({ message: "Error al registrar usuario", error });
   }
 };
 
@@ -24,16 +24,17 @@ const loginUser = async (req, res) => {
     const { email, encryptedPassword } = req.body;
 
     const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
+    if (!user)
+      return res.status(404).json({ message: "Usuario no encontrado" });
 
     if (user.encryptedPassword !== encryptedPassword) {
-      return res.status(401).json({ message: 'Contraseña incorrecta' });
+      return res.status(401).json({ message: "Contraseña incorrecta" });
     }
 
-    res.json({ message: 'Login exitoso', user });
+    res.json({ message: "Login exitoso", user });
   } catch (error) {
-    console.log(error)
-    res.status(500).json({ message: 'Error al iniciar sesión', error });
+    console.log(error);
+    res.status(500).json({ message: "Error al iniciar sesión", error });
   }
 };
 
@@ -41,10 +42,11 @@ const loginUser = async (req, res) => {
 const getUserByEmail = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.params.email });
-    if (!user) return res.status(404).json({ message: 'Usuario no encontrado' });
+    if (!user)
+      return res.status(404).json({ message: "Usuario no encontrado" });
     res.json(user);
   } catch (error) {
-    res.status(500).json({ message: 'Error al obtener usuario', error });
+    res.status(500).json({ message: "Error al obtener usuario", error });
   }
 };
 
@@ -53,11 +55,30 @@ const updateUserInfo = async (req, res) => {
   try {
     const { fullName, userImageUrl, encryptedPassword } = req.body;
 
+    if(!fullName && !encryptedPassword) {
+      return res.status(400).json({ message: "No hay campos para actualizar" });
+    }
+    
     // Construimos solo los campos que sí queremos actualizar
-    const updateFields = { fullName, encryptedPassword };
+    const updateFields = { };
 
+    if (fullName !== undefined && fullName !== null && fullName.trim() !== "") {
+      updateFields.fullName = fullName;
+    }
 
-    if (userImageUrl !== undefined && userImageUrl !== null && userImageUrl.trim() !== '') {
+    if (
+      encryptedPassword !== undefined &&
+      encryptedPassword !== null &&
+      encryptedPassword.trim() !== ""
+    ) {
+      updateFields.encryptedPassword = encryptedPassword;
+    }
+
+    if (
+      userImageUrl !== undefined &&
+      userImageUrl !== null &&
+      userImageUrl.trim() !== ""
+    ) {
       updateFields.userImageUrl = userImageUrl;
     }
 
@@ -68,12 +89,12 @@ const updateUserInfo = async (req, res) => {
     );
 
     if (!user) {
-      return res.status(404).json({ message: 'Usuario no encontrado' });
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
     res.json(user);
   } catch (error) {
-    res.status(500).json({ message: 'Error al actualizar usuario', error });
+    res.status(500).json({ message: "Error al actualizar usuario", error });
   }
 };
 
@@ -83,7 +104,11 @@ const updateUserImg = async (req, res) => {
 
     const updateFields = { userImageUrl };
 
-    if (userImageUrl !== undefined && userImageUrl !== null && userImageUrl.trim() !== '') {
+    if (
+      userImageUrl !== undefined &&
+      userImageUrl !== null &&
+      userImageUrl.trim() !== ""
+    ) {
       updateFields.userImageUrl = userImageUrl;
     }
 
@@ -94,20 +119,19 @@ const updateUserImg = async (req, res) => {
     );
 
     if (!user) {
-      return res.status(404).json({ message: 'Usuario no encontrado' });
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
     res.json(user);
   } catch (error) {
-    res.status(500).json({ message: 'Error al actualizar usuario', error });
+    res.status(500).json({ message: "Error al actualizar usuario", error });
   }
 };
-
 
 module.exports = {
   registerUser,
   loginUser,
   getUserByEmail,
   updateUserInfo,
-  updateUserImg
+  updateUserImg,
 };
