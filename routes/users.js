@@ -4,7 +4,8 @@ const {
   registerUser,
   loginUser,
   getUserByEmail,
-  updateUserInfo,
+  updateUserName,
+  updateUserPassword,
   updateUserImg
 } = require('../controllers/userController');
 
