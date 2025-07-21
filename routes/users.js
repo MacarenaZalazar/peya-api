@@ -92,7 +92,8 @@ const {
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/:email', getUserByEmail);
-router.put('/:email', updateUserInfo);
+router.put('/:email/password', updateUserPassword);
+router.put('/:email/name', updateUserName);
 router.put('/:email/image', updateUserImg);
 
 module.exports = router;

@@ -51,40 +51,22 @@ const getUserByEmail = async (req, res) => {
 };
 
 // Actualizar usuario por email
-const updateUserInfo = async (req, res) => {
+const updateUserPassword= async (req, res) => {
   try {
-    const { fullName, userImageUrl, encryptedPassword } = req.body;
-
-    if(!fullName && !encryptedPassword) {
-      return res.status(400).json({ message: "No hay campos para actualizar" });
-    }
-    
-    // Construimos solo los campos que sí queremos actualizar
-    const updateFields = { };
-
-    if (fullName !== undefined && fullName !== null && fullName.trim() !== "") {
-      updateFields.fullName = fullName;
-    }
+    const { encryptedPassword } = req.body;
 
     if (
-      encryptedPassword !== undefined &&
-      encryptedPassword !== null &&
-      encryptedPassword.trim() !== ""
+      encryptedPassword == undefined ||
+      encryptedPassword == null ||
+      encryptedPassword.trim() == ""
     ) {
-      updateFields.encryptedPassword = encryptedPassword;
+      return res.status(400).json({ message: "La contraseña es requerida" });
     }
 
-    if (
-      userImageUrl !== undefined &&
-      userImageUrl !== null &&
-      userImageUrl.trim() !== ""
-    ) {
-      updateFields.userImageUrl = userImageUrl;
-    }
-
+    // Verificar si el usuario existe
     const user = await User.findOneAndUpdate(
       { email: req.params.email },
-      updateFields,
+      { encryptedPassword },
       { new: true }
     );
 
@@ -95,6 +77,27 @@ const updateUserInfo = async (req, res) => {
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: "Error al actualizar usuario", error });
+  }
+};
+
+
+const updateUserName = async (req, res) => {
+  try {
+    const { fullName } = req.body;            
+    if (!fullName || fullName.trim() === "") {
+      return res.status(400).json({ message: "El nombre completo es requerido" });
+    } 
+    const user = await User.findOneAndUpdate(
+      { email: req.params.email },
+      { fullName },
+      { new: true }
+    );    
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Error al actualizar nombre de usuario", error });
   }
 };
 
@@ -132,6 +135,7 @@ module.exports = {
   registerUser,
   loginUser,
   getUserByEmail,
-  updateUserInfo,
+  updateUserName,
+  updateUserPassword,
   updateUserImg,
 };
